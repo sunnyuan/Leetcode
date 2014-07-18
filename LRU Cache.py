@@ -1,21 +1,19 @@
 class LRUCache:
     def __init__(self, capacity):
-        self.map = collections.OrderedDict()
+        self.cache = collections.OrderedDict()
         self.capacity = capacity
 
     def get(self, key):
-        if key in self.map:
-            value = self.map[key]
-            del self.map[key]
-            self.map[key] = value
-            return value
+        if key in self.cache:
+            val = self.cache[key]
+            del self.cache[key]
+            self.cache[key] = val
+            return self.cache[key]
         return -1
 
     def set(self, key, value):
-        if key in self.map:
-            del self.map[key]
-            self.map[key] = value
-        else:
-            if len(self.map) == self.capacity:
-                self.map.popitem(last = False)
-            self.map[key] = value
+        if key not in self.cache and len(self.cache) == self.capacity:
+            self.cache.popitem(last = False)
+        elif key in self.cache:
+            del self.cache[key]
+        self.cache[key] = value
